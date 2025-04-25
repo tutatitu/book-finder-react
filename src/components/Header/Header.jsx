@@ -1,4 +1,5 @@
-import { useTheme } from '../contexts/ThemeContext';
+import React from 'react';
+import { useTheme } from '../../contexts/ThemeContext';
 import styles from './Header.module.css';
 
 const Header = () => {

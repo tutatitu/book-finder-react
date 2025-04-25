@@ -1,35 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react'; 
+import { useTheme } from './contexts/ThemeContext';
+import Header from './components/Header/Header';
+import SearchBar from './components/SearchBar/SearchBar';
+import BookList from './components/BookList/BookList';
+import ThemeToggle from './components/ThemeToggle/ThemeToggle';
+import useBookSearch from './hooks/useBookSearch';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const { books, loading, error } = useBookSearch(searchQuery);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="app">
+      <Header />
+      <SearchBar onSearch={handleSearch} />
+      {loading && <div className="loader">Loading...</div>}
+      {error && <div className="error">{error}</div>}
+      <BookList books={books} />
+      <ThemeToggle />
+    </div>
+  );
+};
 
-export default App
+export default App;

@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import styles from './SearchBar.module.css';
 
@@ -6,7 +7,9 @@ const SearchBar = ({ onSearch }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch(query);
+    if (typeof onSearch === 'function') {
+      onSearch(query);
+    }
   };
 
   return (
