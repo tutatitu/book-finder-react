@@ -1,10 +1,25 @@
 .card {
-  background: var(--card-bg);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
-  cursor: pointer;
+    background: var(--card-bg);
+    color: var(--text-color);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+    margin: 10px;
+}
+
+.card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.card p {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.8;
+    font-style: italic;
 }
 
 .card:hover {
@@ -14,21 +29,31 @@
 .cover {
   width: 100%;
   height: 300px;
-  object-fit: cover;
-}
-
-.content {
-  padding: 1rem;
+  object-fit: contain;
+  background: var(--card-bg);
+  border-radius: 5px;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .title {
-  color: var(--text-primary);
-  margin: 0 0 0.5rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  margin: 10px 0;
+  color: var(--text-color);
 }
 
 .author {
-  color: var(--text-secondary);
-  margin: 0;
   font-size: 0.9rem;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+.description {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

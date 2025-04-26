@@ -1,4 +1,3 @@
-import React from 'react';
 import { useState, useEffect } from 'react';
 
 const useBookSearch = (query) => {
@@ -7,16 +6,39 @@ const useBookSearch = (query) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchBooks = async () => {
       if (!query.trim()) return;
       
       setLoading(true);
       try {
-        const response = await fetch(
+        // Первый запрос - поиск книг
+        const searchResponse = await fetch(
           `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`
         );
-        const data = await response.json();
-        setBooks(data.docs.slice(0, 12));
+        const searchData = await searchResponse.json();
+        
+        // Второй запрос - получение деталей для каждой книги
+        const booksWithDetails = await Promise.all(
+          searchData.docs.slice(0, 12).map(async (book) => {
+            try {
+              const detailsResponse = await fetch(
+                `https://openlibrary.org${book.key}.json`
+              );
+              const detailsData = await detailsResponse.json();
+              return {
+                ...book,
+                description: detailsData.description || 
+                             detailsData.notes ||
+                             detailsData.first_sentence ||
+                             null
+              };
+            } catch (e) {
+              return book; // Возвращаем оригинальную книгу если ошибка
+            }
+          })
+        );
+        
+        setBooks(booksWithDetails);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -24,8 +46,8 @@ const useBookSearch = (query) => {
       }
     };
 
-    const timer = setTimeout(fetchData, 500);
-    return () => clearTimeout(timer);
+    const debounceTimer = setTimeout(fetchBooks, 500);
+    return () => clearTimeout(debounceTimer);
   }, [query]);
 
   return { books, loading, error };
